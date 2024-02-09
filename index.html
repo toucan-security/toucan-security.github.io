@@ -4,8 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Ralph Ankele">
-    <title>TODO Title here</title>
+    <title>Toucan-Security | Security Audits | Cryptographic Design | Security Consulting | Implementations</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Link to google font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap">
+    <!-- Custom styles for this template -->
+    <link href="assets/css/test.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace; /* Apply Robot Mono font to the whole webpage */
+            /*color: white;*/ /* Set font color to white */
+            /*background-color: rgb(50, 133, 75);*/ /* Set background color to black */
+        }
+    </style>
   </head>
   <body>
 
@@ -30,40 +41,53 @@
         <symbol id="tools" viewBox="0 0 16 16">
             <path d="M1 0L0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.356 3.356a1 1 0 0 0 1.414 0l1.586-1.586a1 1 0 0 0 0-1.414l-3.356-3.356a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0zm9.646 10.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708zM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11z"/>
         </symbol>
+        <symbol id="github" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+        </symbol>
+        <symbol id="linkedin" viewBox="0 0 16 16">
+            <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/>
+        </symbol>
+        <symbol id="twitterx" viewBox="0 0 16 16">
+            <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+        </symbol> 
     </svg>
 
 
     <!-- Navigation bar -->
     <!-- TODO make a hameburger menu -->
-    <div class="container" style="border:1px solid #cecece;">
+    <div class="container" id="home">
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4">
           <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+            <!--<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>-->
+            <img class="mb-4" src="assets/img/toucan.png" alt="" width="64" height="64">
             <span class="fs-4">Toucan Security</span>
           </a>
     
           <ul class="nav nav-pills">
-            <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Services</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+            <li class="nav-item"><a href="#home" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
+            <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
           </ul>
         </header>
       </div>
 
     
     <!-- Top page Hereo -->
-    <div class="container col-xxl-8 px-4 py-5" style="border:1px solid #cecece;">
+    <div class="container col-xxl-10 px-4 py-5">
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
           <div class="col-lg-4">
-            <!--<img src="bootstrap-themes.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="400" height="500" loading="lazy">-->
+            <img src="assets/img/toucan.png" style="transform: scaleX(-1);" class="d-block mx-lg-auto img-fluid" alt="A fuking Toucan" width="600" height="700" loading="lazy">
           </div>
           <div class="col-lg-8">
-            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Hello folks, we are Toucan Security!</h1>
+            <h1 class="display-3 fw-bold text-body-emphasis lh-1 mb-3">Hello folks, we are Toucan Security!</h1>
             <p class="lead">
                 We do security audits, so that your customers don't have to trust your 
                 shitty source code, even when you open source it!
             </p>
+            <br>
+            <br>
+            <br>
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                 <button class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" type="button">
                     Talk to us
@@ -77,9 +101,9 @@
     <div class="b-example-divider"></div>
 
     <!-- Services -->
-    <div class="container col-xxl-8 px-4 py-5" style="border:1px solid #cecece;">
+    <div class="container col-xxl-10 px-4 py-5" id="services">
         <div class="col-lg-8">
-            <h4>Services</h4>
+            <h4 style="color: #ff00ff;">/ SERVICES</h4>
             <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">We do bla bla bla</h1>
         </div>
 
@@ -147,9 +171,9 @@
     <div class="b-example-divider"></div>
 
     <!-- About -->
-    <div class="container col-xxl-8 px-4 py-5" style="border:1px solid #cecece;">
+    <div class="container col-xxl-10 px-4 py-5" id="about">
         <div class="col-lg-8">
-            <h4>About</h4>
+            <h4 style="color: #ff00ff;">/ ABOUT</h4>
             <!--<h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">We do bla bla bla</h1>-->
         </div>
         <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
@@ -255,9 +279,9 @@
 
 
     <!-- Contac us -->
-    <div class="container col-xxl-8 px-4 py-5" style="border:1px solid #cecece;">
+    <div class="container col-xxl-10 px-4 py-5" id="contact">
         <div class="col-lg-10">
-            <h4>Contact us!</h4>
+            <h4 style="color: #ff00ff;">/ CONTACT US!</h4>
         </div>
         <div class="col-lg-10 py-3">
             <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
@@ -270,13 +294,13 @@
             <br>
             <br>
             <h2 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
-                hello@xyz-audit.io
+                hello@toucan-security.io
             </h2>
         </div>
         <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
             <div class="col d-flex align-items-start">
                 <div>
-                    <h3 class="fs-2 text-body-emphasis">Where to find us</h3>
+                    <h4 style="color: #ff00ff;">/ WHERE TO FIND US</h4>
                     <p>
                         Address
                     </p>
@@ -284,7 +308,7 @@
             </div>
             <div class="col d-flex align-items-start">
                 <div>
-                    <h3 class="fs-2 text-body-emphasis">Follow us</h3>
+                    <h4 style="color: #ff00ff;">/ FOLLOW US</h4>
                     <p>
                         Linkdin
                     </p>
@@ -293,7 +317,25 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+          <div class="col-md-6 d-flex align-items-center">
+            <span class="mb-3 mb-md-0 text-body-secondary">&copy; 2024 Toucan-Security Ltd. All rights reserved.</span>
+          </div>
+      
+          <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="text-body-secondary" href="https://github.com/toucan-security/"><svg class="bi" width="24" height="24"><use xlink:href="#github"/></svg></a></li>
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#linkedin"/></svg></a></li>
+            <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitterx"/></svg></a></li>
+          </ul>
+        </footer>
+      </div>
+
     <!-- Get javascript for bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  </body>
+  
+    <!-- Custom js code -->
+    <script src="assets/js/test.js" rel="javascript"></script>
+</body>
 </html>

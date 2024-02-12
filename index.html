@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Link to google font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Custom styles for this template -->
     <link href="assets/css/test.css" rel="stylesheet">
     <style>
@@ -15,6 +17,32 @@
             font-family: 'Roboto Mono', monospace; /* Apply Robot Mono font to the whole webpage */
             /*color: white;*/ /* Set font color to white */
             /*background-color: rgb(50, 133, 75);*/ /* Set background color to black */
+        }
+        .circle-border {
+            width: 180px; /* Set the width and height of the circle */
+            height: 180px;
+            border: 4px solid #000; /* Set the border width and color */
+            border-radius: 50%; /* Make it a circle */
+            overflow: hidden; /* Hide overflowing content */
+            }
+        .circle {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .img-fluid {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .card {
+            background-color: transparent !important; /* Make the body background transparent */
+            border: none;
+        }
+        .card-body {
+            background-color: lightcyan !important; /* Make the body background transparent */
+            border-radius: 10px;
         }
     </style>
   </head>
@@ -50,6 +78,21 @@
         <symbol id="twitterx" viewBox="0 0 16 16">
             <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
         </symbol> 
+        <symbol id="code" viewBox="0 0 16 16">
+            <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0m6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0"/>
+        </symbol> 
+        <symbol id="design" viewBox="0 0 512 512">
+            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+        </symbol>
+        <symbol id="teaching" viewBox="0 0 512 512">
+            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <path d="M192 96a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-8 384V352h16V480c0 17.7 14.3 32 32 32s32-14.3 32-32V192h56 64 16c17.7 0 32-14.3 32-32s-14.3-32-32-32H384V64H576V256H384V224H320v48c0 26.5 21.5 48 48 48H592c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48H368c-26.5 0-48 21.5-48 48v80H243.1 177.1c-33.7 0-64.9 17.7-82.3 46.6l-58.3 97c-9.1 15.1-4.2 34.8 10.9 43.9s34.8 4.2 43.9-10.9L120 256.9V480c0 17.7 14.3 32 32 32s32-14.3 32-32z"/>
+        </symbol>
+        <symbol id="audit" viewBox="0 0 16 16">
+            <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/>
+            <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+        </symbol>
     </svg>
 
 
@@ -89,10 +132,10 @@
             <br>
             <br>
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <button class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" type="button">
+                <a href="#contact" class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" type="button">
                     Talk to us
                     <svg class="bi ms-2" width="24" height="24"><use xlink:href="#arrow-right-short"/></svg>
-                </button>
+                </a>
             </div>
           </div>
         </div>
@@ -101,16 +144,18 @@
     <div class="b-example-divider"></div>
 
     <!-- Services -->
+    <!-- style="background-color: aquamarine;" -->
     <div class="container col-xxl-10 px-4 py-5" id="services">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <h4 style="color: #ff00ff;">/ SERVICES</h4>
-            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">We do bla bla bla</h1>
+            <!-- This answers the question: what do we offer? -->
+            <h1 class="pb-2 display-5 fw-bold text-body-emphasis lh-1 mb-3">We provide the trust to your application, that no one else can!</h1>
         </div>
 
-        <div class="row g-4 py-5 row-cols-1 row-cols-lg-4">
+        <div class="row g-4 py-5 row-cols-2 row-cols-lg-2">
             <div class="col d-flex align-items-start">
-                <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                    <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"/></svg>
+                <div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                    <svg class="bi" width="1.5em" height="1.5em"><use xlink:href="#audit"/></svg>
                 </div>
                 <div>
                     <h3 class="fs-2 text-body-emphasis">Security Audits</h3>
@@ -120,8 +165,8 @@
                 </div>
             </div>
             <div class="col d-flex align-items-start">
-                <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                    <svg class="bi" width="1em" height="1em"><use xlink:href="#cpu-fill"/></svg>
+                <div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                    <svg class="bi" width="1.5em" height="1.5em"><use xlink:href="#design"/></svg>
                 </div>
                 <div>
                     <h3 class="fs-2 text-body-emphasis">Design & Analysis</h3>
@@ -132,8 +177,8 @@
                 </div>
             </div>
             <div class="col d-flex align-items-start">
-                <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                <svg class="bi" width="1em" height="1em"><use xlink:href="#tools"/></svg>
+                <div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1.5em" height="1.5em"><use xlink:href="#teaching"/></svg>
                 </div>
                 <div>
                 <h3 class="fs-2 text-body-emphasis">Security Consulting / Trainings</h3>
@@ -144,8 +189,8 @@
                 </div>
             </div>
             <div class="col d-flex align-items-start">
-                <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                <svg class="bi" width="1em" height="1em"><use xlink:href="#tools"/></svg>
+                <div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1.5em" height="1.5em"><use xlink:href="#code"/></svg>
                 </div>
                 <div>
                 <h3 class="fs-2 text-body-emphasis">Implementation</h3>
@@ -156,25 +201,19 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-8 align-items-center">
-            Would you hire us?
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <button class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" type="button">
-                    Contact us
-                    <svg class="bi ms-2" width="24" height="24"><use xlink:href="#arrow-right-short"/></svg>
-                </button>
-            </div>
-        </div>
     </div>
 
     <div class="b-example-divider"></div>
 
     <!-- About -->
+    <!-- style="background-color: pink;"  -->
     <div class="container col-xxl-10 px-4 py-5" id="about">
-        <div class="col-lg-8">
-            <h4 style="color: #ff00ff;">/ ABOUT</h4>
-            <!--<h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">We do bla bla bla</h1>-->
+        <div class="col-lg-12">
+            <h4 style="color: #ff00ff;">/ ABOUT US</h4>
+            <!-- This answers the question: who are we?/why us? -->
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+                We are world-leading experts in secure product design
+            </h1>
         </div>
         <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
             <!-- First person -->
@@ -182,13 +221,19 @@
                 <div class="card">
                   <div class="row g-0">
                     <div class="col-md-4">
-                      <svg class="bd-placeholder-img" width="100%" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"/><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image</text></svg>
+                      <br>  
+                      <div class="circle-border">
+                        <div class="circle">
+                          <img src="assets/img/ralph.jpg" style="transform: scaleX(-1);" alt="It's me, Ralph" class="img-fluid">
+                        </div>
+                      </div>
+                      
                     </div>
                     <div class="col-md-8">
                       <div class="card-body">
                         <h5 class="card-title">Dr. Ralph Ankele</h5>
                         <p class="card-text">
-                            Founder of XYZ Audits, Cryptographer and Lead Auditor
+                            Cryptographer and Lead Auditor
                         </p>
                         <p class="card-text">
                             <small class="text-body-secondary">
@@ -212,13 +257,13 @@
                     </div>
                     <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title">Dr. Robin Ankele</h5>
+                        <h5 class="card-title">Dr. TODO</h5>
                         <p class="card-text">
-                            Founder of XYZ Audits, TODO
+                            TODO
                         </p>
                         <p class="card-text">
                             <small class="text-body-secondary">
-                                Dr. Robin Ankele ...
+                                TODO
                             </small>
                         </p>
                     </div>
@@ -237,13 +282,13 @@
                     </div>
                     <div class="col-md-8">
                       <div class="card-body">
-                        <h5 class="card-title">Dr. Reinhard Lüftenegger</h5>
+                        <h5 class="card-title">TODO</h5>
                         <p class="card-text">
-                            Cryptographer and Associated Auditor
+                            TODO
                         </p>
                         <p class="card-text">
                             <small class="text-body-secondary">
-                                Dr. Reinhard Lüftenegger ...
+                                TODO
                             </small>
                         </p>
                       </div>
@@ -260,13 +305,13 @@
                     </div>
                     <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title">Dr. Richard Schumi</h5>
+                        <h5 class="card-title">TODO</h5>
                         <p class="card-text">
                             TODO
                         </p>
                         <p class="card-text">
                             <small class="text-body-secondary">
-                                Dr. Richard Schumi ...
+                                TODO
                             </small>
                         </p>
                     </div>
@@ -278,13 +323,15 @@
     </div>
 
 
-    <!-- Contac us -->
+    <!-- Contact us -->
+    <!-- style="background-color: cornflowerblue;" -->
     <div class="container col-xxl-10 px-4 py-5" id="contact">
         <div class="col-lg-10">
             <h4 style="color: #ff00ff;">/ CONTACT US!</h4>
         </div>
-        <div class="col-lg-10 py-3">
+        <div class="col-lg-12 py-3">
             <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+                <!-- Call to action -->
                 Wheter you need a security audit, some cryptographic primitives or protocol designed, 
                 or simply have some questions -- talk to us!
             </h1>

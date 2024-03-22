@@ -104,6 +104,7 @@
     </svg>
 
 
+    <div id="birds">
     <!-- Navigation bar -->
     <!-- TODO make a hameburger menu -->
     <div class="container" id="home">
@@ -125,11 +126,11 @@
 
     
     <!-- Top page Hereo -->
-    <div class="container col-xxl-10 px-4 py-5">
+    <div class="container col-xxl-10 px-4 py-5" id="hereo">
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
           <div class="col-lg-4">
             <!--<img src="assets/img/toucan.png" style="transform: scaleX(-1);" class="d-block mx-lg-auto img-fluid" alt="A fuking Toucan" width="600" height="700" loading="lazy">-->
-            <img src="assets/img/toucan.gif" class="d-block mx-lg-auto img-fluid" alt="A fuking Toucan" width="600" height="700" loading="lazy">
+            <!--<img src="assets/img/toucan.gif" class="d-block mx-lg-auto img-fluid" alt="A fuking Toucan" width="600" height="700" loading="lazy">-->
           </div>
           <div class="col-lg-8">
             <h1 class="display-3 fw-bold text-body-emphasis lh-1 mb-3">Hello folks, we are Toucan Security!</h1>
@@ -151,6 +152,7 @@
     </div>
 
     <div class="b-example-divider"></div>
+</div>
 
     <!-- Services -->
     <!-- style="background-color: aquamarine;" -->
@@ -371,7 +373,8 @@
 
 
     <!-- Contact us -->
-    <!-- style="background-color: cornflowerblue;" -->
+    <!-- style="background-color: aquamarine;" -->
+    <div style="background-color: #9effd8;">
     <div class="container col-xxl-10 px-4 py-5" id="contact">
         <div class="col-lg-10">
             <h4 style="color: #ff00ff;">/ CONTACT US!</h4>
@@ -431,7 +434,7 @@
 
     <!-- Footer -->
     <div class="container">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
           <div class="col-md-6 d-flex align-items-center">
             <span class="mb-3 mb-md-0 text-body-secondary">&copy; 2024 Toucan-Security Ltd. All rights reserved.</span>
           </div>
@@ -444,10 +447,32 @@
         </footer>
       </div>
 
+    </div>
+
     <!-- Get javascript for bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   
     <!-- Custom js code -->
     <script src="assets/js/test.js" rel="javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.birds.min.js"></script>
+    <script>
+        VANTA.BIRDS({
+          el: "#birds",
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200.00,
+          minWidth: 200.00,
+          scale: 1.00,
+          scaleMobile: 1.00,
+          birdSize: 2.10,
+          wingSpan: 14.00,
+          speedLimit: 7.00,
+          quantity: 4.00,
+          backgroundColor: 0x9effd8
+        })
+    </script>
+    
 </body>
 </html>

@@ -398,35 +398,45 @@
         </div>
 
         <div class="col d-flex align-items-start mt-3 mx-auto" style="width: 600px;">
-            <form>
+            <form id="contact-form" action="mail.php" method="POST">
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Name</label>
+                    <label for="formName" class="form-label">Name</label>
                     <input
-                    type="email"
+                    type="text"
                     class="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
+                    id="formName"
+                    tabindex="4"
+                    placeholder="Please enter your name"
+                    required
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email</label>
+                    <label for="formEmail" class="form-label">Email</label>
                     <input
                     type="email"
                     class="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
+                    id="formEmail"
+                    tabindex="4"
+                    placeholder="Please enter your email address"
+                    required
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Message</label>
-                    <input type="message" class="form-control" id="exampleInputPassword1" />
+                    <label for="fromMessage" class="form-label">Message</label>
+                    <textarea 
+                    name="formMessage" 
+                    class="form-control" 
+                    tabindex="4"
+                    cols="20" rows="5"
+                    placeholder="Let us know how we can help you?" 
+                    required></textarea>
                 </div>
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                    <label class="form-check-label" for="exampleCheck1">Yes, I accept that personal informtation will be processed according to the privacy policy.</label>
+                    <input type="checkbox" class="form-check-input" id="privacyCheckbox" required/>
+                    <label class="form-check-label" for="privacyCheckbox">Yes, I accept that personal information will be processed according to the privacy policy.</label>
                 </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="col-auto mx-auto" style="width: 140px;">
+                    <button type="submit" class="btn btn-primary">Send Email</button>
                 </div>
             </form>
         </div>

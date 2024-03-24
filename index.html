@@ -398,11 +398,12 @@
         </div>
 
         <div class="col d-flex align-items-start mt-3 mx-auto" style="width: 600px;">
-            <form id="contact-form" action="mail.php" method="POST">
+            <form id="contact-form" action="https://formspree.io/f/xrgnawnw" method="POST">
                 <div class="mb-3">
                     <label for="formName" class="form-label">Name</label>
                     <input
                     type="text"
+                    name="name"
                     class="form-control"
                     id="formName"
                     tabindex="4"
@@ -414,6 +415,7 @@
                     <label for="formEmail" class="form-label">Email</label>
                     <input
                     type="email"
+                    name="email"
                     class="form-control"
                     id="formEmail"
                     tabindex="4"
@@ -422,10 +424,11 @@
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="fromMessage" class="form-label">Message</label>
+                    <label for="formMessage" class="form-label">Message</label>
                     <textarea 
-                    name="formMessage" 
-                    class="form-control" 
+                    name="message" 
+                    class="form-control"
+                    id="formMessage" 
                     tabindex="4"
                     cols="20" rows="5"
                     placeholder="Let us know how we can help you?" 
@@ -438,6 +441,7 @@
                 <div class="col-auto mx-auto" style="width: 140px;">
                     <button type="submit" class="btn btn-primary">Send Email</button>
                 </div>
+                <p class="mx-auto" style="width: 300px;"id="my-form-status"></p>
             </form>
         </div>
     </div>
@@ -482,6 +486,39 @@
           quantity: 4.00,
           backgroundColor: 0x9effd8
         })
+    </script>
+
+    <script>
+    var form = document.getElementById("contact-form");
+    
+    async function handleSubmit(event) {
+      event.preventDefault();
+      var status = document.getElementById("my-form-status");
+      var data = new FormData(event.target);
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+            'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          status.innerHTML = "Thanks for your message!";
+          form.reset()
+        } else {
+          response.json().then(data => {
+            if (Object.hasOwn(data, 'errors')) {
+              status.innerHTML = data["errors"].map(error => error["message"]).join(", ")
+            } else {
+              status.innerHTML = "Oops! There was a problem sending your message."
+            }
+          })
+        }
+      }).catch(error => {
+        status.innerHTML = "Oops! There was a problem sending your message."
+      });
+    }
+    form.addEventListener("submit", handleSubmit)
     </script>
     
 </body>

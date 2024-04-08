@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Ralph Ankele">
+    <title>Toucan-Security | Security Audits | Cryptographic Design | Security Consulting | Implementations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Link to google font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Custom styles for this template -->
+    <link href="assets/css/test.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace; /* Apply Robot Mono font to the whole webpage */
+            /*color: white;*/ /* Set font color to white */
+            /*background-color: rgb(50, 133, 75);*/ /* Set background color to black */
+        }
+        .circle-border {
+            width: 180px; /* Set the width and height of the circle */
+            height: 180px;
+            border: 4px solid #000; /* Set the border width and color */
+            border-radius: 50%; /* Make it a circle */
+            overflow: hidden; /* Hide overflowing content */
+            }
+        .circle {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .img-fluid {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .card {
+            background-color: transparent !important; /* Make the body background transparent */
+            border: none;
+        }
+        .card-body {
+            background-color: lightcyan !important; /* Make the body background transparent */
+            border-radius: 10px;
+        }
+        .justified {
+            text-align: justify;
+             text-justify: distribute-all-lines;
+        }
+        .list-group {
+            list-style-type: circle; /* Change disc to other values like circle or square for different bullet styles */
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+  </head>
+  <body>
+
+    <!-- SVG's -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+        <symbol id="bootstrap" viewBox="0 0 118 94">
+          <title>Bootstrap</title>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"></path>
+        </symbol>
+        <symbol id="arrow-right-short" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+        </symbol>
+        <symbol id="toggles2" viewBox="0 0 16 16">
+            <path d="M9.465 10H12a2 2 0 1 1 0 4H9.465c.34-.588.535-1.271.535-2 0-.729-.195-1.412-.535-2z"/>
+            <path d="M6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 1a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm.535-10a3.975 3.975 0 0 1-.409-1H4a1 1 0 0 1 0-2h2.126c.091-.355.23-.69.41-1H4a2 2 0 1 0 0 4h2.535z"/>
+            <path d="M14 4a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/>
+        </symbol>
+        <symbol id="cpu-fill" viewBox="0 0 16 16">
+            <path d="M6.5 6a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
+            <path d="M5.5.5a.5.5 0 0 0-1 0V2A2.5 2.5 0 0 0 2 4.5H.5a.5.5 0 0 0 0 1H2v1H.5a.5.5 0 0 0 0 1H2v1H.5a.5.5 0 0 0 0 1H2v1H.5a.5.5 0 0 0 0 1H2A2.5 2.5 0 0 0 4.5 14v1.5a.5.5 0 0 0 1 0V14h1v1.5a.5.5 0 0 0 1 0V14h1v1.5a.5.5 0 0 0 1 0V14h1v1.5a.5.5 0 0 0 1 0V14a2.5 2.5 0 0 0 2.5-2.5h1.5a.5.5 0 0 0 0-1H14v-1h1.5a.5.5 0 0 0 0-1H14v-1h1.5a.5.5 0 0 0 0-1H14v-1h1.5a.5.5 0 0 0 0-1H14A2.5 2.5 0 0 0 11.5 2V.5a.5.5 0 0 0-1 0V2h-1V.5a.5.5 0 0 0-1 0V2h-1V.5a.5.5 0 0 0-1 0V2h-1V.5zm1 4.5h3A1.5 1.5 0 0 1 11 6.5v3A1.5 1.5 0 0 1 9.5 11h-3A1.5 1.5 0 0 1 5 9.5v-3A1.5 1.5 0 0 1 6.5 5z"/>
+        </symbol>
+        <symbol id="tools" viewBox="0 0 16 16">
+            <path d="M1 0L0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.356 3.356a1 1 0 0 0 1.414 0l1.586-1.586a1 1 0 0 0 0-1.414l-3.356-3.356a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0zm9.646 10.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708zM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11z"/>
+        </symbol>
+        <symbol id="github" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+        </symbol>
+        <symbol id="linkedin" viewBox="0 0 16 16">
+            <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/>
+        </symbol>
+        <symbol id="twitterx" viewBox="0 0 16 16">
+            <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+        </symbol> 
+        <symbol id="code" viewBox="0 0 16 16">
+            <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0m6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0"/>
+        </symbol> 
+        <symbol id="design" viewBox="0 0 512 512">
+            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+        </symbol>
+        <symbol id="teaching" viewBox="0 0 512 512">
+            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <path d="M192 96a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-8 384V352h16V480c0 17.7 14.3 32 32 32s32-14.3 32-32V192h56 64 16c17.7 0 32-14.3 32-32s-14.3-32-32-32H384V64H576V256H384V224H320v48c0 26.5 21.5 48 48 48H592c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48H368c-26.5 0-48 21.5-48 48v80H243.1 177.1c-33.7 0-64.9 17.7-82.3 46.6l-58.3 97c-9.1 15.1-4.2 34.8 10.9 43.9s34.8 4.2 43.9-10.9L120 256.9V480c0 17.7 14.3 32 32 32s32-14.3 32-32z"/>
+        </symbol>
+        <symbol id="audit" viewBox="0 0 16 16">
+            <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/>
+            <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+        </symbol>
+        <symbol id="envelope" viewBox="0 0 512 512">
+            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/>
+        </symbol>
+    </svg>
+
+
+    <!-- Navigation bar -->
+    <div style="background-color: #9effd8;">
+        <div class="container" id="home" style="background-color: #9effd8;">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <!--<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>-->
+                <img class="mb-4" src="assets/img/toucan.png" alt="" width="64" height="64">
+                <span class="fs-4">Toucan Security</span>
+            </a>
+        
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="#home" class="nav-link active" aria-current="page">Home</a></li>
+                <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            </header>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1>Privacy Policy</h1>
+                <p>Last updated April 09, 2024</p>
+                <br>
+                <br>
+                <p>This privacy notice for COMPANYNAME ('<b>we</b>', '<b>us</b>', or '<b>our</b>'), 
+                    describes how and why we might collect, store, use, and/or share ('<b>process</b>') 
+                    your information when you use our services ('<b>Services</b>'), such as when you:</p>
+                <ul>
+                    <li>Visit our website at WEBSITE, or any website of ours that links to this privacy notice;</li>
+                    <li>Engage with us in other related ways, including any sales, marketing, or events;</li>
+                </ul>
+                <b>Questions or concerns?</b> Reading this privacy notice will help you undertand your 
+                privacy rights and choices. If you do not agree with our policy and practices, please do 
+                not use our Services. If you still have any questions or concerns, please contact us at 
+                EMAIL. 
+                <br>
+                <br>
+                <h2>Summary of Key Points</h2>
+                <p style="font-weight: bold; font-style: italic;">This summary provides key points from 
+                    our privacy notice, but you can find our more details about any of these topics by 
+                    clicking the link following each key point or by using our table of contents below 
+                    to find the section you are looking for.</p>
+                <p><b>What personal information do we process?</b> When you visit, use, or navigate our 
+                Services, we may process personal information depending on how you interact with us
+                and the Services, the choices you make, and the products and features you use. Learn 
+                more about personal information you disclose to us.</p>
+                <p><b>Do we process any sensitive personal information?</b> We do not process sensitive 
+                    personal information.
+                </p>
+                <p><b>Do we receive any information from third parties?</b> We do not receive any 
+                information from third parties.</p>
+                <p><b>How do we process your information?</b> We process your information to provide, 
+                improve, and administer our Services, communicate with you, for security and fraud 
+                prevention, and to comply with law. We may also process your information for other 
+                purposes with your consent. We process your information only when we have a valid legal 
+                reason to do so. Learn more about how we process your information.</p>
+                <p><b>In what situatuins and with which parties do we share personal information?</b> We 
+                may share information in specific situations and with specific third parties. Learn more 
+                about when and with whom we share your personal information.</p>
+                <p><b>How do we keep your information safe?</b> We have organisational and technical 
+                processes and procedures in place to protect your personal information. However, no 
+                electornical transmission over the Internet of information storage technology can be 
+                guaranteed to be 100% secure, so we cannot promise or guarantee that hackers, 
+                cybercriminals, or other unauthorised third parties will not be able to defeat our security 
+                and improperly collect, access, steal, or modify your information. Learn more about how we 
+                keep your information safe.</p>
+                <p><b>What are your rights?</b> Depending in where you are located geographically, the 
+                applicible privacy law may mean you have certain rights regarding your personal information. 
+                Learn more about your privacy rights.</p>
+                <p><b>How do you exercise your rights?</b> The easiest way to exercise your rights is by visiting
+                WEBSITE, or by contacting us per email at EMAIL. We will consider and act upon any request 
+                in accordance with applicable data protection laws</p>
+                <p>Want to learn more about what we do with any information we collect? Review the privacy notice
+                in full.
+                </p>
+                <br>
+                <br>
+                <h3>Table of Contents</h3>
+                <ol>
+                    <li>What information do we collect?</li>
+                    <li>How do we process your information?</li>
+                    <li>What legal bases do we rely on to process your personal information?</li>
+                    <li>When and with whom do we share your personal information?</li>
+                    <li>How long do we keep your information?</li>
+                    <li>How do we keep you information safe?</li>
+                    <li>Do we collect information from minors?</li>
+                    <li>What are your privacy rights?</li>
+                    <li>Controls for do-not-track features</li>
+                    <li>Do United States residents have specific privacy rights?</li>
+                    <li>Do we make update to this notice?</li>
+                    <li>How can you contact us about this notice?</li>
+                    <li>How can you review, update, or delete the data we collect from you?</li>
+                </ol>
+                <br>
+                <br>
+                <h2>1. What information do we collect?</h2>
+                <br>
+                <p><b>In short:</b> We collect personal information that you provide to us.</p>
+                <p>We collect personal information that you voluntariliy provide to us when 
+                you express an interest in obtaining information about us or our products and 
+                Services, when you participate in activities on the Services, or otherwise 
+                when you contact us. 
+                </p>  
+                <p><b>Personal Information Provided by You</b> The personal information that we 
+                collect depends on the context of your interactions with us and the Services, the 
+                choices you make, and the products and features you use. The personal information 
+                we collect may include the following
+                <ol>
+                    <li>names</li>
+                    <li>email addresses</li>
+                    <li>contact preferences</li>
+                </ol>  
+                </p> 
+                <p><b>Sensitive Information:</b> We do not process sensitive information.
+                </p>
+                <p>All personal information that you provide to us must be true, complete, and 
+                    accurate, and you must notify us of any changes to such personal information.
+                </p>
+                <br>
+                <br>
+                <h2>2. How do we process your information?</h2>
+                <br>
+                <p><b>In short:</b> We process your information to provide, improve, and administer 
+                our Services, communicate with you, for security and fraud prevention, and to comply 
+                with the law. We may also process your information for other purposes with your consent.
+                </p>     
+                <p><b>We process your personal information for a variety of reasons, depending 
+                    on how you interact with our Services, including:
+                </b>
+                <ol>
+                    <li><b>To save or protect an individual's vital interests.</b> We may process 
+                    your information when necessary to save or protect an individual's vital interest,
+                    such as to prevent harm.</li>
+                </ol> 
+                </p>
+                <br>
+                <br>
+                <h2>3. What legal bases do we rely on to process your information?</h2>
+                <br>
+                <p><b>In short:</b> We only process your personal information when we believe it is 
+                necessary and we have a valid legal reason (i.e. legal basis) to do so under applicable 
+                law, like your consent, to comly with laws, to provide you with services to enter into 
+                or fulfil our contractual obligations, to protect your rights, or to fulfil our ledgitimate 
+                business interests.
+                </p>    
+                <p><b>If you are located in the EU, or UK, this section applies to you.</b></p>
+                <p>The General Data Protection Regulation (GDPR) and UK GDPR require us to explain the 
+                    valid legal bases we rely on in order to process your personal information. As such, 
+                    we may rely on the following legal bases to process your personal information:
+                </p>
+                <ol>
+                    <li><b>Consent.</b> We may process your information if you have given us permission 
+                    (i.e. consent) to use your personal information for a specific purpose. You can 
+                    withdraw your consent at any time. Learn more about withdrawing your consent.</li>
+                    <li><b>Legal Obligations.</b> We may process your information where we believe it 
+                    is necessary for compliance with our legal obligations, such as to cooperate with 
+                    a law enforcement body or regulatory agency, exercise or defend our legal rights,
+                    or disclose your information as evidence in litigation in which we are involved.</li>
+                    <li><b>Vital Interests.</b> We may process your information where we believe it is 
+                    necessary to protect your vital interests or the vital interests of a third party, 
+                    such as situations involving potential threats to the safety of any person.</li>
+                </ol> 
+                <p>
+                    In legal terms, we are generally the 'data controller' under European data protection 
+                    laws of the personal information described in this privacy notice, since we determine
+                    the means and/or purposes of the data processing we perform. This privacy notive does 
+                    not apply to the personal information we process as a 'data processor' on behalf of our 
+                    customers. In those situations, the customer that we provide services to and with whom 
+                    we have entered into a data processing agreement is the 'data controller' responsible 
+                    for your personal information, and we merely process your information on their behalf in 
+                    accordance with your instructions. If you want to know more about our customers' privacy 
+                    practices, you should read their privacy policies and direct any question you have to them.
+                </p>
+                <p><b>If you are located in Canada, this section applies to you.</b></p>
+                <p>We may process your information if you have given us specific permissions (i.e express consent) 
+                    to use your personal information for a specific purpose, or in situations where your permission 
+                    can be inferred (i.e. implied consent). You can withdraw your consent at any time.
+                </p>
+                <p> In some exceptional cases, we may be legally permitted under applicable law to process 
+                    your information without your consent, including, for example:
+                </p>
+                <ol>
+                    <li>If collection is clearly in the interests of an individual and consent cannot 
+                        be obtained in a timely way
+                    </li>
+                    <li>For investivations and fraud detection and prevention</li>
+                    <li>For business transactions provided certain conditions are met</li>
+                    <li>If it is contained in a witness statement and the collection is necessary to 
+                        assess, process, or settle and insurance claim
+                    </li>
+                    <li>For identifying injured, ill, or deceased persons and communicating with next of kin</li>
+                    <li>If we have reasonable grounds to believe an individual has been, is, or may be victim 
+                        of financial abuse
+                    </li>
+                    <li>
+                        If it is reasonable to expect collection and use with consent would compromise the 
+                        availability of the information and the collection is reasonable for purposes related 
+                        to investigationg a breach of agreement or a contravention of laws of Canada or a province
+                    </li>
+                    <li>If disclosure is required to comply withe a subpoena, warrant, court order, or rules 
+                        of the court relating to the production of records.
+                    </li>
+                    <li>If it was produced by an individual in the course of their employment, business, or 
+                        profession and the collection is consistent with the purpose for which the information 
+                        was produced. 
+                    </li>
+                    <li>If the collection is solvey for journalistic, artistic, or literary purposes</li>
+                    <li>If the information is publicly available and is specified by the regulations</li>
+                </ol> 
+                <br>
+                <br>
+                <h2>4. When and with whom do we share your personal information?</h2>
+                <br>
+                <p><b>In short:</b> We may share information in specific situations described in this section 
+                    and/or with the following third parties.
+                </p>
+                <p>We may need to share your personal information in the following situations:</p> 
+                <ol>
+                    <li><b>Business Transfers.</b> We may share or transfer your information in connection
+                    with, or during negotiations of, any merger, sale of company assets, financing, or 
+                    acquisition or all or a portion of our business to another company.</li>
+                </ol>
+                <br>
+                <br>
+                <h2>5. How long do we keep your information?</h2>
+                <br>
+                <p><b>In short:</b> We keep your information for as long as necessary to fulfil the purposes 
+                outlined in this privacy notice unless otherwise required by law.
+                </p>
+                <p>We will only keep your personal information for as long as it is necessary for the purposes
+                set out in this privacy notice, unless a longer retention period is required or permitted by 
+                law (such as tax, accounting, or other legal requirements).
+                </p>
+                <p>When we have no ongoing legitimate business need to process your personal information, 
+                we will either delete or anonymise such information, or, if this is not possible (for example, 
+                because your personal information has been stored in backup archives), then we will securely 
+                store your information and isolate it from any further processing until deletion is possible.
+                </p>
+                <br>
+                <br>
+                <h2>6. How long do we keep your information safe?</h2>
+                <br>
+                <p><b>In short:</b> We aim to protect your personal information through a system of organisational 
+                and technical security measures.
+                </p>
+                <p>We have implemented appropriate and reasonable technical and organisational security measures 
+                designed to protect the security of any personal information we process. However, despite our 
+                safeguards and efforts to secure your information, no electronic transmission over the Internet 
+                or information storage technology can be guaranteed to be 100% secure, so we cannot promise of 
+                guarantee that hackers, cybercriminals, or other unauthorized third parties will not be able to 
+                defeat our security and improperly collect, access, steal, or modify your information. Although 
+                we will do our best to protect your personal information, transmission of personal information to 
+                and from our Services is at your own risk. You should only access the Services within a secure 
+                environment.
+                </p>
+                <br>
+                <br>
+                <h2>7. Do we collect information from minors?</h2>
+                <br>
+                <p><b>In short:</b> We do not knowingly collect data from or market to children under 18 years 
+                    of age.
+                </p>
+                <p>We do not knowingly solicit data from or market  to children under 18 years of age. By using 
+                the Services, you represent that you are at least 18 or that you are the parent or guardian of such 
+                a minor and consent to such minor dependent's use of the Services. If we learn that personal 
+                information from users less than 18 years of age has been collected, we will deactivate the account 
+                and take reasonable measures to promptly delete such data from our records. If you become aware 
+                of any data we may have collected from children under age 18, please concat us at EMAIL.
+                </p>
+                <br>
+                <br>
+                <h2>8. What are your privacy rights?</h2>
+                <br>
+                <p><b>In short:</b> In some regions, such as the European Economic Area (EEA), United Kingdom (UK), 
+                Switzerland and Canada, you have rights that allow you greater access to and control over your 
+                personal information. You may review, change, or terminate your account at any time.
+                </p>
+                <p>In some regions (like the EEA, UK, Switzerland, and Canada), you have certain rights under 
+                applicable data protection laws. These may include the right (i) to request access and obtain a 
+                copy of your personal information, (ii) to request rectification or erasure; (iii) to restrict the 
+                processing of your personal information, (iv) if applicable, to data portability; and (v) not to be 
+                subject to automated decision-making. In certain circumstances, you may also have the right to object 
+                to the processing of your personal information. You can maje such a request by contacting us by the 
+                contact details provided in section 'How can you contact us about this noctice?' below.
+                </p>
+                <p>We will consider and act upon any request in accordance with applicable data protection laws.</p>
+                <p>If you are located in the EEA or UK and you believe we are unlawfully processing your personal 
+                information, you also have the right to complain to your Member State data protection authority 
+                or UK data protection authority.
+                </p>
+                <p>If you are located in Switzerland, you may contact the Federal Data Protection and Information
+                Commissioner. 
+                </p>
+                <p><b>Withdrawing your consent:</b> If we are relying on your consent to process your personal 
+                information, which may be express and/or implied consent depending on the applicable law, you have 
+                the right to withdraw your consent at any time. You can withdraw your consent at any time by 
+                contacting us by using the contact details provided in section 'How can you contact us about 
+                this notice' below.</p>
+                <p>However, please note that this will not affect the lawfulness of the processing before its
+                withdrawal nor, when applicable law allows, will it affect the processing of your personal 
+                information conducted in reliance on lawful processing grounds other than consent. 
+                </p>
+                <p>If you have questions of comments about your privacy rights, you may contact us per mail at
+                    EMAIL. 
+                </p>
+                <br>
+                <br>
+                <h2>9. Controls for do-not-track features</h2>
+                <br>
+                <p>Most web browsers and some mobile operating systems and mobile applications include a do-not-track
+                ('DNT') feature or setting you can activate to signal your privacy preference not to have data about 
+                your online browsing activities monitored or collected. At this stage no uniform technology standard 
+                for recognising and implementing DNT signals has been finalised. As such, we do not currently respond 
+                to DNT browser signals or any other mechanism that automatically communicated your choice not to be 
+                tracked online. If a standard for online tracking is adopted that we must follow in the future, we will 
+                inform you about that practice in a revised version of this privacy notice.
+                </p>
+                <br>
+                <br>
+                <h2>10. Do United States residents have specific privacy rights?</h2>
+                <br>
+                <p><b>In short:</b> If you are a resident of California, you are granted specific rights regarding
+                access to your personal information.
+                </p>
+                <p><b>What categories of personal information do we collect?</b></p>
+                <p>We have collected the following categories of personal information in the past twelve (12) months:</p>
+
+                <table>
+                    <tr>
+                      <th>Category</th>
+                      <th>Examples</th>
+                      <th>Collected</th>
+                    </tr>
+                    <tr>
+                      <td>Identifiers</td>
+                      <td>Contact details, such as real names, alias, postal address, telephone or mobule 
+                        contact number, unique personal identifier, online identifier, Internet Protocol address,
+                        email address, and account name
+                      </td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <td>Personal information as defined in the California Customer Records statute</td>
+                      <td>Name, contact information, education, employment, employment history, and financial 
+                        information
+                      </td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <td>Protected classification characteristics under state or federal law</td>
+                      <td>Gender and data of birth
+                      </td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>Commercial information</td>
+                        <td>Transaction information, purchase history, financial details, and payment information
+                        </td>
+                        <td>No</td>
+                      </tr>
+                    <tr>
+                        <td>Biometric information</td>
+                        <td>Fingerprints and voiceprints
+                        </td>
+                        <td>No</td>
+                      </tr>
+                    <tr>
+                        <td>Internet or other similar network activitites</td>
+                        <td>Browsing history, search history, online behaviour, interet data, and interactions 
+                            with our and other websites, applications, systems, and advertisements
+                        </td>
+                        <td>No</td>
+                      </tr>
+                      <tr>
+                        <td>Geolocation data</td>
+                        <td>Device location
+                        </td>
+                        <td>No</td>
+                      </tr>
+                      <tr>
+                        <td>Audio, electronic, visual, thermal, olfactory, or similar information</td>
+                        <td>Images and audio, video or call recordings created in connection with our 
+                        business activities
+                        </td>
+                        <td>No</td>
+                      </tr>
+                      <tr>
+                        <td>Professional or employment-related information</td>
+                        <td>Services at a business level or job title, work history, and professional
+                            qualifications if you apply for a job with us
+                        </td>
+                        <td>No</td>
+                      </tr>
+                      <tr>
+                        <td>Education information</td>
+                        <td>Student records and directory information
+                        </td>
+                        <td>No</td>
+                      </tr>
+                      <tr>
+                        <td>Inferences drawn from collected personal information</td>
+                        <td>Inferences drawn from any of the collected personal information listed above 
+                            to create a profile or summary about, for example, an individual's preferences
+                            and characteristics
+                        </td>
+                        <td>No</td>
+                      </tr>
+                      <tr>
+                        <td>Sensitive personal information</td>
+                        <td>
+                        </td>
+                        <td>No</td>
+                      </tr>
+                  </table> 
+                <br>  
+                <p>We may also collect other personal information outside of these categories through instances
+                    where you interact with us in person, online or by phone or mail in the context of:
+                </p>
+                <ol>
+                    <li>Receiving help through our customer support channels;</li>
+                    <li>Participation in customer surveys or contests; and</li>
+                    <li>Facilitation in the delivery of our Services and to respond to your inquiries.</li>
+                </ol>
+                <p><b>How do we use and share your personal information?</b></p>
+                <p>Learn about how we use your personal information in the section 'How do we process
+                    your information?'</p>
+                <p><b>Will your information be shared with anyone else?</b></p>
+                <p>We may disclose your personal information with our service providers pursuant to a written 
+                    contract between us and each service provider. Learn more about how we disclose your personal
+                    information to in the section, 'When and with whom do we share your personal information?'
+                </p>
+                <p>We may use your personal information for our own business purposes, such as for undertaking
+                internal research for technological development and demonstration. This is not considered to be 
+                'selling' of your personal information.
+                </p>
+                <p>We have not disclosed, sold, or shared any personal information to third parties for a business 
+                or commerical purpose in the preceding twelve (12) months. We will not sell or share personal 
+                information in the future belonging to website visitors, users, and other consumers.
+                </p>
+                <h4>California Residents</h4>
+                <p>California Civil Code Section 1798.83, also known as the 'Shine The Light' law permits our 
+                users who are California residents to request and obtain from us, once a year and free of charge, 
+                information about categories of personal information (if any) we disclosed to third parties for 
+                direct marketing purposes and the names and addresses of all third parties with which we shared 
+                personal information in the immediated preceding calendar year. If you are a California resident 
+                and would like to make such a request, please submit your request in writing to us using the contact 
+                information provided below.
+                </p>
+                <p>If you are under 18 years of age, reside in California, and have a registered account with the 
+                Services, you have the right to request removal of unwanted data that you publicly post on the 
+                Services. To request removal of such data, please contact us using the contact information provided 
+                below and include the email address associated with your account and a statement that you resider 
+                in California. We will make sure the data is not publicly displayed in the Services, but please be 
+                aware that the data may not be completely or comprehensively removed from all our systems (e.g. 
+                backups, etc. ).
+                </p>
+                <p><b>CCPA Privacy Notice</b></p>
+                <p>This section applies only ti California residents. Under the California Consumer Privacy Act 
+                (CCPA), you have the rights listed below.
+                </p>
+                <p>The California Code of Regulations defines a 'residents' as:</p>
+                <ol>
+                    <li>Every individual who is in the State of California for other than temporary or transitory 
+                    purpose and
+                    </li>
+                    <li>Every individual who is domiciled in the State of California who is outside the State 
+                    of California for a temporary or transitoru purpose
+                    </li>
+                </ol>
+                <p>All other individuals are defined as 'non-residents'.</p>
+                <p>If this definition of 'resident' applies to you, we must adhere to certain rights and obligations 
+                regarding your personal information.
+                </p>
+                <p><b>Your rights with respect to your personal data</b></p>
+                <p><u>Right to request deletion of the data -- Request to delete</u></p>
+                <p>You can ask for the deletion of your personal information. If you ask us to delete your personal
+                information, we will respect your request and delete your personal information, subject to certain 
+                exceptions provided by law, such as (but not limited to) the exercise by another cosumer of his or her 
+                right of free speech, our complicance requirements resulting form a legal obligation, or any processing
+                that may be required to protect against illegal activities.
+                </p>
+                <p><u>Right to be informed -- Request to know</u></p>
+                <p>Depending on the circumstances, you have a right to know:</p>
+                <ol>
+                    <li>whether we collect and use your personal information;</li>
+                    <li>the categories of personal information that we collect;</li>
+                    <li>the purpose for which the collected personal information is used;</li>
+                    <li>whether we sell or share personal information to third parties;</li>
+                    <li>the categories of personal information that we sold, shared, or disclosed
+                        for a business purpose;
+                    </li>
+                    <li>the categories of third parties to whom the personal information was sold, shared, 
+                        or disclosed for a business purpose;
+                    </li>
+                    <li>the business or commercial purpose for collecting, selling, or sharing personal
+                        information; and
+                    </li>
+                    <li>the specific pieces of personal information we collected about you.</li>
+                </ol>
+                <p>In accordance with applicable law, we are not obligated to provide or delete consumer 
+                information that is deidentified in response to a consumer request or to re-identify individual 
+                data to verify a consumer request.
+                </p>
+                <p><u>Right to Non-Discrimination for the Exercise of a Consumer's Privacy Rights</u></p>
+                <p>We will not discriminate against you if you exercise your privacy rights</p>
+                <p><u>Right o Limit Use and Disclosure of Sensitive Personal Information</u></p>
+                <p>We do not process consumer's sensitive personal information.</p>
+                <p><u>Verification process</u></p>
+                <p>Upon receiving your request, we will need to verify your identity to determine you are 
+                    the same person about whom we have the information in our system. These verification efforts
+                require us to ask you to provide information so that we can match it with information you have 
+                previously provided us. For instance, depending on the type of request you submit, we may ask you to 
+                provide certain information so that we can match the information you provide with the information we 
+                already have on file, or we may contact you through a communication methid (e.g. phone or email) that 
+                you have previously provided to us. We may also use other verification methods as the circumstances 
+                dictate. 
+                </p>
+                <p>We will only use personal information provided in your request to verify your identity or authority 
+                to make the request. To the extent possible, we will avoid requesting additional information from you for 
+                the purposes of verification. However, if we cannot verify your identity from the information already 
+                maintained by us, we may request that you provide additional information for the purposes of verifying
+                your identity and for security or fraud-prevention purposes. We will delete such additional provided 
+                information as soon as we finished verifying you.
+                </p>
+                <p><u>Other privacy rights</u></p>
+                <ol>
+                    <li>You may object to the processing of your personal information.</li>
+                    <li>You may request correction of your personal data if it is incorrect or no longer relevant, 
+                    or ask to restrict the processing of the information.
+                    </li>
+                    <li>You can designate an authorised agent to make a request under the CCPA on your behalf. 
+                    We may deny a request from an authorised agens that does not submit proof that they have 
+                    been validly authorised to act on your behalf in accordance with the CCPA.
+                    </li>
+                    <li>You may request to opt out from future selling or sharing of your personal information
+                    to third parties. Upon receiving an opt-out request, we will act upon the request as soon 
+                    as feasibly possible, but no later than fifteen (15) days from the data of the request 
+                    submission.
+                    </li>
+                </ol>
+                <p>To exercise these rights, you can contact us by visiting WEBSITE, by email at EMAIL,
+                or by referring to the contact details at the bottom of this document. If you have a complaint
+                about how we handle your data, we would like to hear from you.
+                </p>
+                <br>
+                <br>
+                <h2>11. Do we make updates to this notice?</h2>
+                <br>
+                <p><b>In short:</b> Yes, we will update this notice as necessary to stay compliant with relevant laws.
+                </p>
+                <p>We may update this privacy notice from time to time. The updated version will be indicated 
+                by an updated 'Revised' date and the updated version will be effective as soon as it is accessible. 
+                If we make material changes to this privacy notice, we may notify you either by prominently posting 
+                a notice of such change or by directly sending you a notification. We encourage you to review this 
+                privacy notice frequently to be informed of how we are protecting your information.
+                </p>
+                <br>
+                <br>
+                <h2>12. How can you contact us about this notice?</h2>
+                <br>
+                <p>If you have questions or comments about this notice, you may contact our Data Protection 
+                Officer (DPO) by email at EMAIL, or contact us by post at:
+                ADDRESS
+                </p>
+                <p>If you are a resident in the European Economic Area or Switzerland, we are the 'data controller' 
+                of your personal information. We have appointed TODO to be our representative in the EEA and 
+                Switzerland. You can contact them directly regarding our processing of your information, or by 
+                post to: 
+                ADDRESS
+                </p>
+                <p>If you are a resident in the United Kingdom, we are the 'data controller' 
+                    of your personal information. We have appointed TODO to be our representative in the UK. 
+                    You can contact them directly regarding our processing of your information, or by 
+                    post to: 
+                    ADDRESS
+                </p>
+                <br>
+                <br>
+                <h2>13. How can you review, update, or delete the data we collect from you?</h2>
+                <br>
+                <p>Based on the applicable laws of your country, you may have the rights to request access 
+                to the personal information we collect from you, change that information, or delete it. To request 
+                review, update, or deletion of your personal information please contact us per email at EMAIL.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div style="background-color: #9effd8;">
+        <div class="container" >
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
+            <div class="col-md-6 d-flex align-items-center">
+                <span class="mb-3 mb-md-0 text-body-secondary">&copy; 2024 Toucan-Security Ltd. All rights reserved.</span>
+            </div>
+        
+            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                <li class="ms-3"><a class="text-body-secondary" href="https://github.com/toucan-security/"><svg class="bi" width="24" height="24"><use xlink:href="#github"/></svg></a></li>
+                <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#linkedin"/></svg></a></li>
+                <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitterx"/></svg></a></li>
+            </ul>
+            </footer>
+        </div>
+        </div>
+    </div>
+
+    <!-- Get javascript for bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
